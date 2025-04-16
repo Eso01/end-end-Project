@@ -1,0 +1,56 @@
+# create a deployment for a workstation
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-generator
+  namespace: python-app-ns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: password-generator
+  template:
+    metadata:
+      labels:
+        app: password-generator
+    spec:
+      containers:
+        - name: password-generator
+          image: 590184049486.dkr.ecr.us-east-1.amazonaws.com/devops/my-docker-repo:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          command: ["python", "-c"]
+          args:
+            - |
+              import random
+              import string
+
+              def generate_password(length=12):
+                  characters = string.ascii_letters + string.digits + string.punctuation
+                  return ''.join(random.choice(characters) for _ in range(length))
+
+              print(generate_password())
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+
+---
+# service type: LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: password-generator
+  namespace: python-app-ns
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5000
+      protocol: TCP
+  selector:
+    app: password-generator
