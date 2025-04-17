@@ -34,8 +34,6 @@ def generate_passwords():
 
 if __name__ == '__main__':
     app.run(debug=False)
-
 else:
     # This will run when using Gunicorn (production)
     application = app
-
