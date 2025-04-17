@@ -12,6 +12,7 @@ def generate_password(length, special_chars, numbers):
     random.shuffle(password)
     return ''.join(password)
 
+
 @app.route('/', methods=['GET'])
 def start():
     return "Welcome to Password Generator"
@@ -34,6 +35,9 @@ def generate_passwords():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
+
 else:
     # This will run when using Gunicorn (production)
     application = app
+
