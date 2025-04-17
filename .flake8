@@ -1,0 +1,16 @@
+[flake8]
+max-line-length = 120
+
+# These are error codes we want to ignore
+ignore =
+    E203,
+    W503,
+    E231,
+    E302,
+    W391
+
+# These directories will be excluded
+exclude =
+    .git,
+    __pycache__,
+    venv
