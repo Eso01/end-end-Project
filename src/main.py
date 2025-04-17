@@ -27,10 +27,12 @@ def generate_passwords():
     special_chars = int(request.json["special_chars"])
     numbers = int(request.json["numbers"])
     num_passwords = int(request.json["num_passwords"])
+
     passwords = []
     for _ in range(num_passwords):
         password = generate_password(min_length, special_chars, numbers)
         passwords.append(password)
+
     return jsonify(passwords)
 
 
