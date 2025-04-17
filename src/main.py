@@ -4,29 +4,25 @@ import string
 
 app = Flask(__name__)
 
-
 def generate_password(length, special_chars, numbers):
     password = []
-    password.extend(
-        random.choices(string.ascii_letters, k=length - special_chars - numbers)
-    )
+    password.extend(random.choices(string.ascii_letters, k=length - special_chars - numbers))
     password.extend(random.choices(string.digits, k=numbers))
     password.extend(random.choices(string.punctuation, k=special_chars))
     random.shuffle(password)
-    return "".join(password)
+    return ''.join(password)
 
-
-@app.route("/", methods=["GET"])
+@app.route('/', methods=['GET'])
 def start():
     return "Welcome to Password Generator"
 
 
-@app.route("/generate-passwords", methods=["POST"])
+@app.route('/generate-passwords', methods=['POST'])
 def generate_passwords():
-    min_length = int(request.json["min_length"])
-    special_chars = int(request.json["special_chars"])
-    numbers = int(request.json["numbers"])
-    num_passwords = int(request.json["num_passwords"])
+    min_length = int(request.json['min_length'])
+    special_chars = int(request.json['special_chars'])
+    numbers = int(request.json['numbers'])
+    num_passwords = int(request.json['num_passwords'])
 
     passwords = []
     for _ in range(num_passwords):
@@ -36,8 +32,10 @@ def generate_passwords():
     return jsonify(passwords)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=False)
+
 else:
     # This will run when using Gunicorn (production)
     application = app
+
