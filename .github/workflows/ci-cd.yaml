@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install flake8 pytest
+        
+    - name: Lint with flake8
+      run: flake8 src/ --max-line-length=120
+      
+    - name: Run tests
+      run: pytest tests/ -v
+
+  build-and-push:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+        
+    - name: Login to ECR
+      id: login-ecr
+      uses: aws-actions/ecr-login@v1
+      
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }} .
+        docker tag ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }} ${{ steps.login-ecr.outputs.registry }}/password-generator:latest
+        
+    - name: Push Docker image
+      run: |
+        docker push ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }}
+        docker push ${{ steps.login-ecr.outputs.registry }}/password-generator:latest
