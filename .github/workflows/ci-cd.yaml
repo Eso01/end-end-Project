@@ -24,6 +24,9 @@ jobs:
     - name: Run tests
       run: pytest tests/ -v
 
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
+
   build-and-push:
     needs: lint-and-test
     runs-on: ubuntu-latest
