@@ -42,9 +42,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_REGION }}
         
-    - name: Login to ECR
+    - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/ecr-login@v1
+      uses: aws-actions/ecr-login@v2
       
     - name: Build Docker image
       run: |
