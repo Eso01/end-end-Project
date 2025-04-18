@@ -48,10 +48,10 @@ jobs:
       
     - name: Build Docker image
       run: |
-        docker build -t ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }} .
-        docker tag ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }} ${{ steps.login-ecr.outputs.registry }}/password-generator:latest
+        docker build -t ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }} .
+        docker tag ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }} ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:latest
         
     - name: Push Docker image
       run: |
-        docker push ${{ steps.login-ecr.outputs.registry }}/password-generator:${{ github.sha }}
-        docker push ${{ steps.login-ecr.outputs.registry }}/password-generator:latest
+        docker push ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }}
+        docker push ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:latest
