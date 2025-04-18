@@ -44,7 +44,7 @@ jobs:
         
     - name: Login to ECR
       id: login-ecr
-      uses: aws-actions/ecr-login@v2
+      uses: aws-actions/ecr-login@v1
       
     - name: Build Docker image
       run: |
