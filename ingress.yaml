@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: password-reverse-ingress
+  namespace: python-app-ns
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.local
+    http:
+      paths:
+      - path: /generate-password
+        pathType: Prefix
+        backend:
+          service:
+            name: service-password
+            port:
+              number: 80
+      - path: /reverse-word
+        pathType: Prefix
+        backend:
+          service:
+            name: service-reverse
+            port:
+              number: 80

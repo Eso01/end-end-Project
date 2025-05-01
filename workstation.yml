@@ -16,30 +16,43 @@ spec:
     spec:
       containers:
         - name: password-generator
-          image: 590184049486.dkr.ecr.us-east-1.amazonaws.com/devops/password-generator:424c08ca16f0994bbdcff95f12ea1be889cf9875
-          imagePullPolicy: Always
+          image: my-password-generator:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 5000
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-
+        - name: reverse-service
+          image: my-reverse-service:latest
+          imagePullPolicy: Never
+          ports:
+             - containerPort: 5001
 ---
-# service type: LoadBalancer
+# service type: ClusterIP
 apiVersion: v1
 kind: Service
 metadata:
-  name: password-generator
+  name: service-password
   namespace: python-app-ns
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 80
-      targetPort: 5000
-      protocol: TCP
   selector:
     app: password-generator
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-reverse
+  namespace: python-app-ns
+spec:
+  selector:
+    app: password-generator
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5001
+  type: ClusterIP
+
