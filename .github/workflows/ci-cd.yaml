@@ -33,34 +33,33 @@ jobs:
     - name: Set PYTHONPATH
       run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
 
-  #build-and-push:
-   # needs: lint-and-test
-   # runs-on: ubuntu-latest
-   # if: github.ref == 'refs/heads/main'
-    
-    #steps:
-    #- uses: actions/checkout@v4
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.AWS_REGION }}
-        
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      
-    - name: Build Docker image
+  build-and-push:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set Short SHA
       run: |
-        docker build -t ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }} .
-        docker tag ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }} ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:latest
-        
-    - name: Push Docker image
+        echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+        echo "SHORT_SHA=${{ env.SHORT_SHA }}"
+    - name: Build password-generator image
       run: |
-        docker push ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:${{ github.sha }}
-        docker push ${{ steps.login-ecr.outputs.registry }}/devops/password-generator:latest
+        docker build -t eso001/password-generator:${{ env.SHORT_SHA }} .
+    - name: Build reverse-service image
+      run: |
+        docker build -t eso001/reverse-service:${{ env.SHORT_SHA }} -f Dockerfile.reverse .
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_TOKEN}}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Push password-generator image
+      run: |
+        docker push eso001/password-generator:${{ env.SHORT_SHA }}
+    - name: Push reverse-service image
+      run: |
+        docker push eso001/reverse-service:${{ env.SHORT_SHA }}
+
+
 # Helm deployment (commented for simulation)
       # - name: Install/Upgrade Helm Chart
       #   run: |
