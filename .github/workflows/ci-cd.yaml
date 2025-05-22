@@ -51,7 +51,7 @@ jobs:
       run: |
         docker build -t eso001/reverse-service:${{ env.SHORT_SHA }} -f Dockerfile.reverse .
     - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKER_TOKEN}}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      run: echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     - name: Push password-generator image
       run: |
         docker push eso001/password-generator:${{ env.SHORT_SHA }}
