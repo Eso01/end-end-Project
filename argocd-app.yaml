@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: complete-devops-project
+  name: password-generator
   namespace: argocd
 spec:
   project: default
+  source:
+    repoURL: "https://github.com/Eso01/end-end-Project"
+    targetRevision: HEAD
+    path: password-generator
   destination:
     server: https://kubernetes.default.svc
     namespace: default
-  sources:
-    - repoURL: https://github.com/Eso01/end-to-end-DevOps-Project
-      path: complete-devops-project-time-printer
-      targetRevision: HEAD
-    - repoURL: https://github.com/Eso01/end-end-Project
-      path: password-generator
-      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

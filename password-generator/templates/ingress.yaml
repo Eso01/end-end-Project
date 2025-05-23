@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -27,30 +27,15 @@ spec:
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
-       
-         paths:
+        paths:
           {{- range .paths }}
           - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
+            pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $.Values.service.name }}
+                name: {{ .backend.service.name }}
                 port:
-                  number: {{ .port }}
-          
-          - path: {{ .path }}
-              {{- with .pathType }}
-              pathType: {{ . }}
-              {{- end }}
-              backend:
-                service:
-                  name: {{ $.Values.service.name }}
-                  port:
-                    number: {{ .port }}
-   
-        
-            {{- end }}
-      {{- end }}
+                  number: {{ .backend.service.port.number }}
+          {{- end }}
+    {{- end }}
 {{- end }}
