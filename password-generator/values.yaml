@@ -5,11 +5,11 @@ namespace: python-app-ns
 images:
   passwordGenerator:
     repository: password-generator
-    tag: latest
+    tag: a2e4851
     pullPolicy: Never
   reverseService:
     repository: reverse-service
-    tag: latest
+    tag: a2e4851
     pullPolicy: Never
 
 service:
