@@ -43,7 +43,6 @@ jobs:
     - name: Set Short SHA
       run: |
         echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
-        echo "SHORT_SHA=${{ env.SHORT_SHA }}"
     - name: Build password-generator image
       run: |
         docker build -t eso001/password-generator:${{ env.SHORT_SHA }} .
@@ -58,6 +57,17 @@ jobs:
     - name: Push reverse-service image
       run: |
         docker push eso001/reverse-service:${{ env.SHORT_SHA }}
+
+    - name: Configure Git Author
+      run: |
+        git config --global user.name "eso01"
+        git config --global user.email "samuelonwuachi88@gmail.com"
+    - name: Update Helm Chart with New Image Tag
+      run: |
+        sed -i "s/tag:.*/tag: ${{env.SHORT_SHA}}/" ./password-generator/values.yaml
+        git add password-generator/values.yaml
+        git commit -m "Update image tag to ${{env.SHORT_SHA}}"
+        git push origin main
 
 
 # Helm deployment (commented for simulation)
