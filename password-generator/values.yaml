@@ -8,11 +8,11 @@ images:
     tag: 7a1518b
     pullPolicy: IfNotPresent
     tag: 7a1518b
-    pullPolicy: Never
+    pullPolicy: Always
   reverseService:
     repository: eso001/reverse-service
     tag: 7a1518b
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 service:
   name: password-generator
