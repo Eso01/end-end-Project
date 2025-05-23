@@ -6,11 +6,11 @@ images:
   passwordGenerator:
     repository: password-generator
     tag: 90940ea
-    pullPolicy: Never
+    pullPolicy: IfNotPresent
   reverseService:
     repository: reverse-service
     tag: 90940ea
-    pullPolicy: Never
+    pullPolicy: IfNotPresent
 
 service:
   name: password-generator
