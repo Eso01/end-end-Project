@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-billing-app
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  sources:
+    - repoURL: https://github.com/Eso01/end-to-end-DevOps-Project
+      path: complete-devops-project-time-printer
+      targetRevision: HEAD
+    - repoURL: https://github.com/Eso01/end-end-Project
+      path: password-generator
+      targetRevision: HEAD
