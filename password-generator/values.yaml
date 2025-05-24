@@ -6,8 +6,6 @@ images:
   passwordGenerator:
     repository: eso001/password-generator
     tag: c531119
-    pullPolicy: IfNotPresent
-    tag: c531119
     pullPolicy: Always
   reverseService:
     repository: eso001/reverse-service
