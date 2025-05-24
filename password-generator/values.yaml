@@ -5,11 +5,11 @@ namespace: python-app-ns
 images:
   passwordGenerator:
     repository: eso001/password-generator
-    tag: c531119
+    tag: latest
     pullPolicy: Always
   reverseService:
     repository: eso001/reverse-service
-    tag: c531119
+    tag: latest
     pullPolicy: Always
 
 service:
