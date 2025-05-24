@@ -6,13 +6,11 @@ images:
   passwordGenerator:
     repository: eso001/password-generator
     tag: 90940ea
-    pullPolicy: IfNotPresent
-    tag: ea629bf
-    pullPolicy: Never
+    pullPolicy: Always
   reverseService:
     repository: eso001/reverse-service
     tag: 90940ea
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 service:
   name: password-generator
