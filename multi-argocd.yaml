@@ -12,7 +12,7 @@ spec:
             targetRevision: HEAD
             path: .
             namespace: python-app-ns
-          - name: app2
+          - name: complete-devops-project-time-printer
             repoURL: "https://github.com/Eso01/end-to-end-DevOps-Project"
             targetRevision: HEAD
             path: .
