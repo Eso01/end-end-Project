@@ -10,12 +10,12 @@ spec:
           - name: password-generator
             repoURL: "https://github.com/Eso01/end-end-Project"
             targetRevision: HEAD
-            path: .
+            path: password-generator
             namespace: python-app-ns
           - name: complete-devops-project-time-printer
             repoURL: "https://github.com/Eso01/end-to-end-DevOps-Project"
             targetRevision: HEAD
-            path: .
+            path: complete-devops-project-time-printer
             namespace: default
   template:
     metadata:
