@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: multi-argocd-apps
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: password-generator
+            repoURL: "https://github.com/Eso01/end-end-Project"
+            targetRevision: HEAD
+            path: password-generator
+            namespace: python-app-ns
+          - name: complete-devops-project-time-printer
+            repoURL: "https://github.com/Eso01/end-to-end-DevOps-Project"
+            targetRevision: HEAD
+            path: complete-devops-project-time-printer
+            namespace: default
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: '{{repoURL}}'
+        targetRevision: '{{targetRevision}}'
+        path: '{{path}}'
+        helm:
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
