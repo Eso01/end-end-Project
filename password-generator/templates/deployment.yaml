@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-generator
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: password-generator
+  template:
+    metadata:
+      labels:
+        app: password-generator
+    spec:
+      containers:
+        - name: password-generator
+          image: {{ .Values.images.passwordGenerator.repository }}:{{ .Values.images.passwordGenerator.tag }}
+          imagePullPolicy: {{ .Values.images.passwordGenerator.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.password.targetPort }}
+        - name: reverse-service
+          image: {{ .Values.images.reverseService.repository }}:{{ .Values.images.reverseService.tag }}
+          imagePullPolicy: {{ .Values.images.reverseService.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.reverse.targetPort }}

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-password
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: password-generator
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.password.port }}
+      targetPort: {{ .Values.service.password.targetPort }}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-reverse
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: password-generator
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.reverse.port }}
+      targetPort: {{ .Values.service.reverse.targetPort }}
+  type: ClusterIP
